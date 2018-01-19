@@ -5,4 +5,4 @@ script: "mvn clean compile generate-test-sources test jacoco:report coveralls:re
 addons:
   apt:
     packages:
-- oracle-java8-installer
+      - oracle-java8-installer
