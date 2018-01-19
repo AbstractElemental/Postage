@@ -7,10 +7,10 @@ import lombok.Getter;
 @Getter
 public class PostageReceipt {
 
-	private final Boolean success;
-	private final Email email;
+    private final Boolean success;
+    private final Email email;
 
-	private final String messageId;
-	private final Throwable throwable;
+    private final String messageId;
+    private final Throwable throwable;
 
 }

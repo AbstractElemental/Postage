@@ -1,0 +1,8 @@
+language: java
+sudo: false
+install: true
+script: "mvn clean compile generate-test-sources test jacoco:report coveralls:report install"
+addons:
+  apt:
+    packages:
+- oracle-java8-installer

@@ -1,16 +1,16 @@
 package com.abstractelemental.postage;
 
-import java.io.Serializable;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.io.Serializable;
+
 @AllArgsConstructor
 @Getter
-class LazyEmailModel implements Serializable {
+public class LazyEmailModel implements Serializable {
 
-	private static final long serialVersionUID = -2218233289382469254L;
+    private static final long serialVersionUID = -2218233289382469254L;
 
-	private String name;
+    private String name;
 
 }
