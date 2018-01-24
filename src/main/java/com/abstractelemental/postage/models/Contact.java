@@ -1,42 +1,38 @@
 package com.abstractelemental.postage.models;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.SneakyThrows;
 
 import javax.mail.internet.InternetAddress;
 import java.io.UnsupportedEncodingException;
+
+import static org.joor.Reflect.on;
 
 /**
  * Contact represents a recipient (to, cc, or bcc) or a sender.
  */
 
 @Getter
-@Setter
-@ToString
-@EqualsAndHashCode(exclude = {"displayName"})
 public class Contact implements Comparable<Contact> {
 
     private String email;
     private String displayName;
 
-
-    /**
-     * Contact with no display name
-     *
-     * @param email address of contact.
-     */
     public Contact(final String email) {
         this(email, null);
     }
 
-    /**
-     * Contact with display name
-     *
-     * @param email       address of contact.
-     * @param displayName of contact.
-     */
     public Contact(final String email, final String displayName) {
         this.email = email;
         this.displayName = displayName;
+    }
+
+    public static InternetAddress toInternetAddress(final Contact c) {
+        InternetAddress address = new InternetAddress();
+        address.setAddress(c.getEmail());
+        on(address).set("personal", c.getDisplayName());
+        return address;
     }
 
     @Override
@@ -44,10 +40,15 @@ public class Contact implements Comparable<Contact> {
         return email.compareToIgnoreCase(o.getEmail());
     }
 
-    // Every JVM I've ever used has UTF-8 Encoding...
-    @SneakyThrows(UnsupportedEncodingException.class)
-    public static InternetAddress toInternetAddress(final Contact c) {
-        return new InternetAddress(c.getEmail(), c.getDisplayName());
+    @Override
+    public boolean equals(final Object o) {
+        return o instanceof Contact &&
+                ((Contact) o).getEmail().equalsIgnoreCase(this.getEmail());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getEmail().hashCode();
     }
 
 }

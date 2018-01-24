@@ -57,6 +57,7 @@
         <freemarker.version>2.3.23</freemarker.version>
         <jodah-failsafe.version>1.0.5</jodah-failsafe.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
+        <joor.version>0.9.7</joor.version>
         <slf4j.version>1.7.25</slf4j.version>
         <lombok.version>1.16.20</lombok.version>
         <logback.version>1.2.3</logback.version>
@@ -88,6 +89,12 @@
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <version>${validation-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>joor-java-8</artifactId>
+            <version>${joor.version}</version>
         </dependency>
 
         <dependency>

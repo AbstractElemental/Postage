@@ -41,13 +41,6 @@ public class PostOffice implements AutoCloseable {
     private Consumer<PostageReceipt> successCallback;
     private Consumer<PostageReceipt> failureCallback;
 
-    /**
-     * PostOffice requires SMTP Settings (obviously). You can optionally pass in two Consumer
-     * functions that the Postmaster will call on success and failure respectively. If you need that
-     * functionality use the other constructor!
-     *
-     * @param settings representing your email environment
-     */
     public PostOffice(final SMTPSettings settings) {
         this.settings = settings;
         executor = Executors.newFixedThreadPool(settings.getExecutorThreadCount());
@@ -72,10 +65,9 @@ public class PostOffice implements AutoCloseable {
     }
 
     /**
-     * PostOffice requires SMTP Settings (obviously). You can optionally pass in two Consumer
+     * PostOffice allows for you to optionally pass in two Consumer
      * functions that the Postmaster will call on success and failure respectively. If you do not
-     * need one or the other pass null in the argument. If you need neither, use the other
-     * constructor silly goose!
+     * need one or the other pass null in the argument.
      *
      * @param settings        representing your email environment
      * @param successCallback function that consumes a PostageReceipt object

@@ -12,6 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.function.Consumer;
 
 import static org.junit.Assert.assertTrue;
@@ -19,9 +20,16 @@ import static org.junit.Assert.assertTrue;
 @Slf4j
 public class GeneralTest {
 
-    private static final SMTPSettings SETTINGS;
+    private static SMTPSettings SETTINGS;
 
-    static {
+    private static Boolean success;
+    private static Boolean failure;
+
+    @Rule
+    public final GreenMailRule greenMail = new GreenMailRule(ServerSetupTest.SMTP);
+
+    @BeforeClass
+    public static void setup() {
         SETTINGS = new SMTPSettings();
 
         SETTINGS.setHost("localhost");
@@ -39,12 +47,6 @@ public class GeneralTest {
 
         SETTINGS.setClassForTemplateLoading(PostOffice.class);
     }
-
-    private static Boolean success;
-    private static Boolean failure;
-
-    @Rule
-    public final GreenMailRule greenMail = new GreenMailRule(ServerSetupTest.SMTP);
 
     @Test
     @SneakyThrows(InterruptedException.class)
@@ -74,9 +76,12 @@ public class GeneralTest {
                     .freemarkerTemplateFilename("test_template.ftl")
                     .freemarkerView(new LazyEmailModel("Jim"))
                     .recipient(new Contact("jim@jimboson.com", "Jim Jimboson"))
+                    .carbonCopy(new Contact("fred@fakerson.xyz"))
+                    .blindCarbonCopy(new Contact("potato@salad.com"))
+                    .metadata(new HashMap<>())
+                    .metadatum("foo", "bar")
                     .from(new Contact("postage-test@abstractelemetal.com", "Abstract Elemental Open Source"))
-                    .attachment(Attachment.builder().name("patrick.gif")
-                            .filesystemPath("src/test/resources/patrick.gif").build())
+                    .attachment(Attachment.fromPath("patrick.gif", "Fancy gif!", "src/test/resources/patrick.gif"))
                     .build();
 
             postOffice.send(email);
@@ -86,6 +91,18 @@ public class GeneralTest {
             assert success.equals(Boolean.TRUE);
             assert failure.equals(Boolean.FALSE);
         }
+    }
+
+    @Test
+    public void modelTests() {
+        Contact contactNoDisplay = new Contact("brandon@abstractelemental.com");
+        Contact contactWithDisplay = new Contact("brandon@abstractelemental.com", "Brandon T. Kowalski");
+        Contact thirdContact = new Contact("tim@abstractelemental.com", "Tim Parsons");
+
+        assert contactNoDisplay.equals(contactWithDisplay);
+        assert contactNoDisplay.compareTo(contactWithDisplay) == 0;
+        assert !contactWithDisplay.equals(thirdContact);
+
     }
 
 }
