@@ -178,6 +178,7 @@ public class PostOffice implements AutoCloseable {
                 e.setBcc(blindCarbonCopies);
             }
 
+            e.setFrom(email.getFrom().getEmail());
             e.setSubject(email.getSubject());
             e.setMsg(email.getPlainBody());
 

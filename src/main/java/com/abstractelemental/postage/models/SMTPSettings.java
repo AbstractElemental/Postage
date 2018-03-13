@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -53,14 +54,14 @@ public class SMTPSettings implements Serializable {
     private boolean sslOnConnect = Boolean.FALSE;
 
     @Valid
-    @Size(min = 1)
+    @Min(1)
     private int executorThreadCount = 1;
 
     @Valid
     private boolean retryOnFailure = Boolean.TRUE;
 
     @Valid
-    @Size(min = 1)
+    @Min(1)
     private int retryCount = 5;
 
 }
